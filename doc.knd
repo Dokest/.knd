@@ -1,0 +1,18 @@
+Pretext
+title{Hello World!}
+title{Title with a b{bold part}}
+
+
+This is an example of multicomponent b,it{this text is both bold and italic}
+You can also add images:
+img{/images/logo.png}[center, width=400, height=400]
+
+The idea is that you should also be able to write references as follows:
+label{cite:test}"e=m*c^2"
+
+At some other point I can reference that label using the ref component ref{cite:test}.
+
+You should also be able to do tables using a custom syntax:
+table{
+	header{H1}
+}[center]
