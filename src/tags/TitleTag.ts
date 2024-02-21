@@ -1,8 +1,8 @@
-import { Component } from "../Component.ts";
+import { Tag } from "../Tag.ts";
 import { Parser } from "../Parser.ts";
 
 
-export class TitleComponent extends Component {
+export class TitleTag extends Tag {
 	constructor(private readonly header: number) {
 		super();
 	}

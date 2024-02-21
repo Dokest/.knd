@@ -1,6 +1,6 @@
-import { Component } from "./Component.ts";
+import { Tag } from "./Tag.ts";
 import { Node } from "./Node.ts";
-import { DefaultComponent } from "./components/DefaultComponent.ts";
+import { DefaultTag } from "./tags/DefaultTag.ts";
 
 
 export const DEFAULT_NODE_NAME = "__DEFAULT__";
@@ -10,8 +10,8 @@ export const SEPARATORS = [" ", "\n"];
 
 
 export class Parser {
-	constructor(private readonly components: Record<string, Component>) {
-		this.components[DEFAULT_NODE_NAME] = new DefaultComponent();
+	constructor(private readonly components: Record<string, Tag>) {
+		this.components[DEFAULT_NODE_NAME] = new DefaultTag();
 	}
 	
 	

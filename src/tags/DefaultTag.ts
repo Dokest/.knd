@@ -1,8 +1,8 @@
-import { Component } from "../Component.ts";
+import { Tag } from "../Tag.ts";
 import { Parser } from "../Parser.ts";
 
 
-export class DefaultComponent extends Component {
+export class DefaultTag extends Tag {
 	render(contents: string, _args: Record<string, string | number>, _parser: Parser): string {
 		return contents;
 	}

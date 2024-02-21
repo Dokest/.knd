@@ -1,7 +1,7 @@
 import { Parser } from "./Parser.ts";
 
 
-export abstract class Component {
+export abstract class Tag {
 	abstract render(contents: string, args: Record<string, string | number>, parser: Parser): string;
 
 
