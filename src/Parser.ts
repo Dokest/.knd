@@ -22,45 +22,34 @@ export class Parser {
 		let currentNode = mainNode;
 		let depth = 0;
 		let keepClosingBracket = false;
+		let i = 0;
 		
-		for (const char of contents) {
+		for (; i < contents.length; i++) {
+			const char = contents.charAt(i);
+			
 			if (SEPARATORS.includes(char)) {
 				currentNode.contents += lastToken + char;
 				lastToken = "";
 			} else if (char === "{") {
-				if (depth === 0) {
-					const multicomponents = lastToken.split(",");
-					const firstMultiComponent = multicomponents.shift()!;
-					
-					const newNode = new Node(firstMultiComponent);
-					
-					if (multicomponents.length > 0) {
-						newNode.contents += multicomponents.join(",") + "{";
-						keepClosingBracket = true;
-					}
-					
-					nodes.push(newNode);
-					currentNode = newNode;
-					
-					lastToken = "";
-				} else {
-					lastToken += char;
+				const multicomponents = lastToken.split(",");
+				const firstMultiComponent = multicomponents.shift()!;
+				
+				const newNode = new Node(firstMultiComponent);
+				
+				if (multicomponents.length > 0) {
+					newNode.contents += multicomponents.join(",") + "{";
+					keepClosingBracket = true;
 				}
 				
-				depth += 1;
-			} else if (char === "}") {
-				depth -= 1;
+				nodes.push(newNode);
 				
-				if (depth === 0) {
-					currentNode.contents += lastToken + (keepClosingBracket ? "}" : "");
-					lastToken = "";
-					keepClosingBracket = false;
-					
-					currentNode = new Node(DEFAULT_NODE_NAME);
-					nodes.push(currentNode);
-				} else {
-					lastToken += char;
-				}
+				lastToken = "";
+				
+				const [inner, newFrom] = this.parseUntilTagEnd(contents, i, keepClosingBracket);
+				newNode.contents += inner;
+				i = newFrom;
+				currentNode = new Node(DEFAULT_NODE_NAME);
+				nodes.push(currentNode);
 			} else {
 				lastToken += char;
 			}
@@ -99,6 +88,34 @@ export class Parser {
 		}
 		
 		return html;
+	}
+
+
+	private parseUntilTagEnd(contents: string, from: number, keepEndingBracket: boolean): [string, number] {
+		let depth = 0;
+		let innerContent = "";
+		let i = from;
+		
+		for (; i < contents.length; i++) {
+			const char = contents.charAt(i);
+			
+			if (char === "{") {
+				depth++;
+			} else if (char === "}") {
+				depth--;
+				
+				if (depth === 0) {
+					break;
+				}
+			} else {
+				innerContent += char;
+			}
+		}
+		
+		return [
+			keepEndingBracket ? innerContent + "}" : innerContent,
+			i,
+		];
 	}
 }
 
